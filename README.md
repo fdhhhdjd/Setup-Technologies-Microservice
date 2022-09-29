@@ -7,8 +7,8 @@
 <a href = "mailto:nguyentientai10@gmail.com"><img src="https://img.icons8.com/fluency/48/000000/send-mass-email.png" alt="License"></a>
 </p>
 
-# Note:Code Demo Microservice-Rabbitmq-Redis
-# Microservice server (Users,Product,Order),Rabbitmq, RedisPubsub, Mongodb,NodeJs
+# Note:Code Demo Microservice-Rabbitmq-Redis.
+# Microservice server (Users,Product,Order),Rabbitmq, RedisPubsub, Mongodb,NodeJs.
 
 ## Tài Khoản Donate li Cf để có động lực code cho anh em tham khảo 😄😄.
 
