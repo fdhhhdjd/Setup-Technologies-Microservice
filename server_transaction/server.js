@@ -16,6 +16,8 @@ connect_amqp().then(() => {
   channel.consume("ORDER_PRODUCT", (data) => {
     console.log("Order Product Success:::", JSON.parse(data.content));
     REDIS.publish("ordersystem", JSON.stringify(JSON.parse(data.content)));
+    //delete data queue
+    channel.ack(data);
   });
 });
 const app = express();
