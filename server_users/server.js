@@ -26,7 +26,7 @@ app.get("/api", async (req, res) => {
 
 //!Link router Main
 const user_route = require("./routes/user_routes");
-app.use("/api", user_route);
+app.use("/", user_route);
 
 const PORT = process.env.PORT || 5002;
 app.listen(PORT);

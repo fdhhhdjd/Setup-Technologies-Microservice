@@ -1,0 +1,3 @@
+.env
+./routes/registry.json
+node_modules

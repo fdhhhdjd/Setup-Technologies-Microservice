@@ -34,7 +34,8 @@ app.get("/", async (req, res) => {
 });
 
 //!Link router Main
-
-const PORT = process.env.PORT || 5000;
+const transaction_route = require("./routes/transaction_routes");
+app.use("/", transaction_route);
+const PORT = process.env.PORT || 5001;
 app.listen(PORT);
 console.log(`Running on http://localhost:${PORT}`);
