@@ -44,6 +44,11 @@ const userController = {
       },
     });
   },
+  getUSer: async (req, res) => {
+    return res.status(200).json({
+      msg: "Server Users!",
+    });
+  },
 };
 const createAccessToken = (user) => {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
