@@ -7,7 +7,6 @@ const REDIS_IO = require("./db/redis");
 
 connectDB();
 const app = express();
-
 app.use(express.json());
 app.use(cors());
 
@@ -22,8 +21,9 @@ app.get("/", async (req, res) => {
 });
 
 //!Link router Main
+
 const product_route = require("./routes/product_routes");
-app.use("/api", product_route);
+app.use("/", product_route);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
