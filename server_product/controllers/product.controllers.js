@@ -49,5 +49,10 @@ const userController = {
       msg: "Buy Product success!!",
     });
   },
+  GetProduct: async (req, res) => {
+    return res.status(200).json({
+      msg: "Server Product",
+    });
+  },
 };
 module.exports = userController;

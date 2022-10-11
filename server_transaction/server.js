@@ -32,7 +32,9 @@ app.get("/", async (req, res) => {
   };
   return res.send(healthcheck);
 });
-
+//!Link router Main
+const transaction_route = require("./routes/transaction_routes");
+app.use("/api", transaction_route);
 //!Link router Main
 
 const PORT = process.env.PORT || 5000;

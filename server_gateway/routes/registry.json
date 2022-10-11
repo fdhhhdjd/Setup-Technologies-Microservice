@@ -1,0 +1,51 @@
+{
+  "services": {
+    "products": {
+      "index": 0,
+      "instances": [
+        {
+          "apiName": "products",
+          "protocol": "http",
+          "host": "localhost",
+          "port": 5000,
+          "url": "http://localhost:5000/api/product/",
+          "enabled": true
+        }
+      ],
+      "loadBalancerStrategy": "GATE_WAY_SERVICE_PRODUCTS"
+    },
+    "transactions": {
+      "index": 0,
+      "instances": [
+        {
+          "apiName": "transactions",
+          "protocol": "http",
+          "host": "localhost",
+          "port": 5001,
+          "url": "http://localhost:5001/api/transaction/",
+          "enabled": true
+        }
+      ],
+      "loadBalancerStrategy": "GATE_WAY_SERVICE_TRANSACTION"
+    },
+    "users": {
+      "index": 0,
+      "instances": [
+        {
+          "apiName": "users",
+          "protocol": "http",
+          "host": "localhost",
+          "port": 5002,
+          "url": "http://localhost:5002/api/user/",
+          "enabled": true
+        }
+      ],
+      "loadBalancerStrategy": "GATE_WAY_SERVICE_USERS"
+    }
+  },
+  "auth": {
+    "users": {
+      "fdhhhdjd": { "username": "fdhhhdjd", "password": "Taiheo123@" }
+    }
+  }
+}
