@@ -5,7 +5,11 @@ var connection, channel;
 async function connect_amqp() {
   connection = await amqp.connect(process.env.RABBIT_MQ);
   channel = await connection.createChannel();
-  await channel.assertQueue("BUY_PRODUCT");
+  const nameQueue = "ORDER_PRODUCT";
+  await channel.assertQueue(nameQueue, {
+    // Mất hàng đợi khi bị crack (cloud hoặc server chết)
+    durable: true,
+  });
 }
 connect_amqp();
 const userController = {
@@ -34,13 +38,19 @@ const userController = {
     const products = await Product.find({
       _idL: { $in: ids },
     });
-    channel.sendToQueue(
+    await channel.sendToQueue(
       "ORDER_PRODUCT",
       Buffer.from(
-        JSON.stringify({
-          products,
-          user_id: req.user.id,
-        })
+        JSON.stringify(
+          {
+            products,
+            user_id: req.user.id,
+          },
+          {
+            expiration: "10000",
+            persistent: true,
+          }
+        )
       )
     );
     return res.status(200).json({
