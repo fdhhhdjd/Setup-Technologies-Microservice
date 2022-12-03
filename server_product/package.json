@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "repository": "https://github.com/fdhhhdjd/Microservice-Rabbitmq-Redis-Gateway",
+  "repository": "https://github.com/fdhhhdjd/Setup-Enviroment-Microservice",
   "author": "Tien Tai <profile-forme.cf>",
   "private": true,
 
