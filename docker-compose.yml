@@ -1,0 +1,143 @@
+version: "3.7"
+
+services:
+  ###! SERVER_PRODUCT ###
+  server_product:
+    image: server_product
+    container_name: server_product
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server_product
+    environment:
+      PORT: "${SERVER_PRODUCT}"
+    ports:
+      - ${SERVER_PRODUCT}:${SERVER_PRODUCT}
+    volumes:
+      - /app/node_modules
+      - ./server_product:/app
+    env_file:
+      - .env
+    command: npm run dev
+    networks:
+      - microservice
+       
+  ##! SERVER_SEND_EMAIL ###
+  server_send_email:
+    image: server_send_email_setup_service
+    container_name: server_send_email_setup_service
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server_send_email
+    environment:
+      PORT: "${PORT_SEND_EMAIL}"
+    ports:
+      - ${PORT_SEND_EMAIL}:${PORT_SEND_EMAIL}
+    volumes:
+      - /app/node_modules
+      - ./server_send_email:/app
+    env_file:
+      - .env
+    command: npm run dev
+    networks:
+      - microservice
+
+  ###! SERVER_TRANSACTION ###
+  server_transaction:
+    image: server_transaction
+    container_name: server_transaction
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server_transaction
+    environment:
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - ${PORT_TRANSACTION}:${PORT_TRANSACTION}
+    volumes:
+      - /app/node_modules
+      - ./server_transaction:/app
+    env_file:
+      - .env
+    command: npm run dev
+    networks:
+      - microservice    
+      
+  ###! SERVER_USER ###
+  server_user:
+    image: server_user
+    container_name: server_user
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server_users
+    environment:
+      PORT: "${PORT_USER}"
+    ports:
+      - ${PORT_USER}:${PORT_USER}
+    volumes:
+      - /app/node_modules
+      - ./server_users:/app
+    env_file:
+      - .env
+    command: npm run dev
+    networks:
+      - microservice    
+  ###! Redis ###
+  redis:
+    image: redis
+    restart: always
+    environment:
+      REDIS_PASSWORD: "${REDIS_PASSWORD}"
+    env_file:
+      - .env
+    networks:
+      - microservice
+  ###! Rabitmq ###
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq_setup_microservice
+    restart: unless-stopped
+    environment:
+        RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+        RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+        RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+        RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
+    env_file:
+      - .env
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - microservice
+
+
+  ###! WebServer:NGINX ###
+  nginx:
+    image: nginx:1.21.3
+    container_name: nginx_setup_microservice
+    depends_on:
+      - server_product
+      - server_send_email
+      - server_transaction
+      - server_user
+      - redis
+      - rabbitmq
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - "${PORT_NGINX_SERVER}"
+    env_file:
+      - .env
+    networks:
+      - microservice
+
+###! NETWORD GENERAL ###
+networks:
+  microservice:
+    driver: bridge

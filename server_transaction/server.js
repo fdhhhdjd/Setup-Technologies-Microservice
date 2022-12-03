@@ -6,9 +6,12 @@ dotenv.config();
 const connectDB = require("./db/mongo");
 const REDIS = require("./db/redis");
 connectDB();
+
 var connection, channel;
 async function connect_amqp() {
-  connection = await amqp.connect(process.env.RABBIT_MQ);
+  // connection = await amqp.connect(process.env.RABBIT_MQ);
+  const {RABBITMQ_DEFAULT_USER,RABBITMQ_DEFAULT_PASS,RABBITMQ_HOST,RABBITMQ_DEFAULT_VHOST}=process.env
+  connection = await amqp.connect(`amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@${RABBITMQ_HOST}${RABBITMQ_DEFAULT_VHOST}`);
   channel = await connection.createChannel();
   await channel.assertQueue("ORDER_PRODUCT");
 }
@@ -28,6 +31,7 @@ app.get("/", async (req, res) => {
   const healthcheck = {
     uptime: process.uptime(),
     message: "Tài Đẹp trai ",
+    service: `Transaction :::: ${process.env.PORT || 5001}`,
     timestamp: Date.now(),
   };
   return res.send(healthcheck);
@@ -37,6 +41,6 @@ const transaction_route = require("./routes/transaction_routes");
 app.use("/api", transaction_route);
 //!Link router Main
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT);
 console.log(`Running on http://localhost:${PORT}`);

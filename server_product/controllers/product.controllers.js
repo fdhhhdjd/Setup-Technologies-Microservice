@@ -2,8 +2,11 @@ var amqp = require("amqplib");
 const Product = require("../models/product.model");
 require("dotenv").config();
 var connection, channel;
+const {RABBITMQ_DEFAULT_USER,RABBITMQ_DEFAULT_PASS,RABBITMQ_HOST,RABBITMQ_DEFAULT_VHOST}=process.env
+const rabitmq=`amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@${RABBITMQ_HOST}${RABBITMQ_DEFAULT_VHOST}`;
 async function connect_amqp() {
-  connection = await amqp.connect(process.env.RABBIT_MQ);
+  // connection = await amqp.connect(process.env.RABBIT_MQ);
+  connection = await amqp.connect(rabitmq);
   channel = await connection.createChannel();
   await channel.assertQueue("BUY_PRODUCT");
 }

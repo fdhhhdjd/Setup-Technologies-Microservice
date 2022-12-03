@@ -20,7 +20,8 @@ REDIS.on("pmessage", (pattern, channel, message) => {
 app.get("/", async (req, res) => {
   const healthcheck = {
     uptime: process.uptime(),
-    message: "Tài Đẹp trai ",
+    message: "Tài Đẹp trai!",
+    service: `Send Email :::: ${process.env.PORT || 5003}`,
     timestamp: Date.now(),
   };
   return res.send(healthcheck);

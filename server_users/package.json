@@ -2,11 +2,14 @@
   "name": "server_product",
   "version": "1.0.0",
   "description": "",
-  "main": "db.js",
+  "main": "server.js",
+  "repository": "https://github.com/fdhhhdjd/Microservice-Rabbitmq-Redis-Gateway",
+  "author": "Tien Tai <profile-forme.cf>",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon --legacy-watch server.js"
   },
   "keywords": [],
   "author": "",

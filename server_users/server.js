@@ -19,6 +19,8 @@ app.get("/api", async (req, res) => {
   const healthcheck = {
     uptime: process.uptime(),
     message: "Tài Đẹp trai ",
+    service: `User :::: ${process.env.PORT || 5000}`,
+
     timestamp: Date.now(),
   };
   return res.send(healthcheck);

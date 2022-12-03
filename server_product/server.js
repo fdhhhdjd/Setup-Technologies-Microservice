@@ -12,10 +12,11 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", async (req, res) => {
-  REDIS_IO.get("server_product");
+  console.log(process.env.NODE_ENV,"NODE_ENV")
   const healthcheck = {
     uptime: process.uptime(),
-    message: "Tài Đẹp trai ",
+    message: "Tài Đẹp trai! ",
+    service: `Product :::: ${process.env.PORT || 5000}`,
     timestamp: Date.now(),
   };
   return res.send(healthcheck);
