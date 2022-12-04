@@ -24,7 +24,9 @@ app.get("/", async (req, res) => {
 
 //!Link router Main
 const product_route = require("./routes/product_routes");
+const version_routes = require("./routes/version_routes");
 app.use("/api", product_route);
+app.use("/api", version_routes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
