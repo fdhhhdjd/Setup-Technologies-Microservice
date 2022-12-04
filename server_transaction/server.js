@@ -30,7 +30,7 @@ app.use(cors());
 app.get("/", async (req, res) => {
   const healthcheck = {
     uptime: process.uptime(),
-    message: "Tài Đẹp trai ",
+    message: "Tài Đẹp trai!",
     service: `Transaction :::: ${process.env.PORT || 5001}`,
     timestamp: Date.now(),
   };
