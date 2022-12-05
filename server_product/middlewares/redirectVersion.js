@@ -1,8 +1,7 @@
 exports.redirectVersion = payload => {
     return (req, res, next) => {
         const that = this;
-        console.log(this)
-        const version = req.headers['x-github-api-version'] || '2020-12-01';
+        const version = req.headers['x-github-api-version'] || null;
         if (!payload[version]) {
             return res.status(503).json({
                 status: 503,
