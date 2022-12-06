@@ -17,7 +17,7 @@ const userController = {
     }
   },
   Login: async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password } = req.body.input.user_login_input
     const user = await Users.findOne({ email });
     if (!user)
       return res.status(400).json({
