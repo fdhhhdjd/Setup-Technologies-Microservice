@@ -83,7 +83,8 @@ services:
       - .env
     command: npm run dev
     networks:
-      - microservice    
+      - microservice     
+
   ###! Redis ###
   redis:
     image: redis
@@ -94,6 +95,7 @@ services:
       - .env
     networks:
       - microservice
+      
   ###! Rabitmq ###
   rabbitmq:
     image: rabbitmq:management
@@ -110,10 +112,9 @@ services:
       - 5672:5672
       - 15672:15672
     volumes:
-      - ./rabbitmq-data:/var/lib/rabbitmq
+      - rabbitmq-data:/var/lib/rabbitmq
     networks:
       - microservice
-
 
   ###! WebServer:NGINX ###
   nginx:
@@ -136,8 +137,58 @@ services:
       - .env
     networks:
       - microservice
+###! ELASTIC SEARCH
+  elasticsearch:
+    container_name: es-container
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3
+    environment:
+      - xpack.security.enabled=false
+      - "discovery.type=single-node"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    env_file:
+      - .env    
+    ports:
+      - 9200:9200
+    networks:
+      - es-net  
 
+###! KIBANA
+  kibana:
+    container_name: kb-container
+    image: docker.elastic.co/kibana/kibana:8.4.3
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_HOSTS=http://es-container:9200
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    env_file:
+      - .env
+    ports:
+      - 5601:5601
+    networks:
+      - es-net 
+  
 ###! NETWORD GENERAL ###
 networks:
   microservice:
     driver: bridge
+  es-net:
+    driver: bridge  
+volumes:
+    db_data:
+        driver: local
+    rabbitmq-data:
+        driver: local
+    elasticsearch-data:
+        driver: local
+
+
