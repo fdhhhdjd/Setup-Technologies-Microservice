@@ -1,5 +1,7 @@
 FROM node:14-alpine3.12
 
+RUN apk update && apk add --no-cache curl vim wget bash nano
+
 # Create app directory
 WORKDIR /app
 

@@ -91,8 +91,12 @@ services:
     restart: always
     environment:
       REDIS_PASSWORD: "${REDIS_PASSWORD}"
+    command: 
+      - --appendonly yes
     env_file:
       - .env
+    volumes:
+      - redis-data:/data
     networks:
       - microservice
       
@@ -109,8 +113,8 @@ services:
     env_file:
       - .env
     ports:
-      - 5672:5672
-      - 15672:15672
+      - ${RABBIT_MQ_PORT}:${RABBIT_MQ_PORT}
+      - ${RABBIT_MQ_SERVER}:${RABBIT_MQ_SERVER}
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
     networks:
@@ -137,6 +141,7 @@ services:
       - .env
     networks:
       - microservice
+      
 ###! ELASTIC SEARCH
   elasticsearch:
     container_name: es-container
@@ -145,11 +150,11 @@ services:
       - xpack.security.enabled=false
       - "discovery.type=single-node"
     volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
-    env_file:
-      - .env    
+      - elasticsearch-data:/usr/share/elasticsearch/data    
     ports:
-      - 9200:9200
+      - ${ELASTIC_SEARCH_PORT}:${ELASTIC_SEARCH_PORT}
+    env_file:
+      - .env     
     networks:
       - es-net  
 
@@ -160,7 +165,7 @@ services:
     depends_on:
       - elasticsearch
     environment:
-      - ELASTICSEARCH_HOSTS=http://es-container:9200
+      - ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOSTS}
     ulimits:
       memlock:
         soft: -1
@@ -170,10 +175,10 @@ services:
         hard: 65536
     cap_add:
       - IPC_LOCK
-    env_file:
-      - .env
     ports:
       - 5601:5601
+    env_file:
+      - .env
     networks:
       - es-net 
   
@@ -185,6 +190,8 @@ networks:
     driver: bridge  
 volumes:
     db_data:
+        driver: local
+    redis-data:
         driver: local
     rabbitmq-data:
         driver: local

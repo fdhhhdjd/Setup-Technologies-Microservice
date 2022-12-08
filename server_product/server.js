@@ -15,7 +15,7 @@ app.get("/", async (req, res) => {
   console.log(process.env.NODE_ENV,"NODE_ENV")
   const healthcheck = {
     uptime: process.uptime(),
-    message: "Tài Đẹp trai! ",
+    message: "Tài Đẹp trai!! ",
     service: `Product :::: ${process.env.PORT || 5000}`,
     timestamp: Date.now(),
   };
